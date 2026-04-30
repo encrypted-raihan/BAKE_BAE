@@ -72,6 +72,24 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
 fadeEls.forEach(el => observer.observe(el));
+window.addEventListener("load", () => {
+  const loader = document.getElementById("loader");
+
+  // step 1: expand logo
+  setTimeout(() => {
+    loader.classList.add("expand");
+  }, 200);
+
+  // step 2: fade everything out
+  setTimeout(() => {
+    loader.classList.add("hide");
+  }, 1000);
+
+  // step 3: remove from DOM
+  setTimeout(() => {
+    loader.style.display = "none";
+  }, 1600);
+});
 
 // ===== GALLERY FILTER =====
 const filterBtns = document.querySelectorAll('.filter-btn');
@@ -231,6 +249,7 @@ document.querySelectorAll('.menu-order').forEach(btn => {
     window.location.href = url;
   });
 });
+
 
 // ===== FLOATING WA BUTTON — show after scroll =====
 const waFloat = document.querySelector('.wa-float');

@@ -1437,30 +1437,7 @@ ul { list-style: none; }
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
-.slot {
-  border: 1px solid #e5d3c2;
-  border-radius: 12px;
-  padding: 12px;
-  text-align: center;
-  cursor: pointer;
-  background: #fff;
-  transition: 0.2s;
-}
 
-.slot:hover {
-  border-color: #a0673a;
-  background: #f9f3ec;
-}
-
-.slot.active {
-  background: var(--brown);
-  color: #fff;
-  border-color: var(--brown);
-}
-
-.slot.active span {
-  color: #fff;
-}
 
 .date-buttons {
   display: flex;
@@ -1481,4 +1458,69 @@ ul { list-style: none; }
   background: #a0673a;
   color: #fff;
   border-color: #a0673a;
+}
+
+/* ===== LOGO FIX ===== */
+.logo {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+  transform: scale(1.2); /* slightly zoom */
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.brand-name {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.brand-sub {
+  font-size: 11px;
+  letter-spacing: 2px;
+  opacity: 0.7;
+}
+
+/* ===== LOADER FIX ===== */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #fdf6ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* single clean definition */
+#loaderLogo {
+  width: 42px;
+  height: auto;
+
+  transform: scale(3);
+  transform-origin: center;
+  will-change: transform;
+
+  transition: transform 1s ease, opacity 0.5s ease;
+}
+
+/* expand */
+#loader.expand #loaderLogo {
+  transform: scale(6);
+}
+
+/* fade */
+#loader.hide {
+  opacity: 0;
+  transition: opacity 1s ease;
 }
