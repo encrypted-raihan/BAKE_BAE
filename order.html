@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Cake</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --brown: #a0673a;
+      --cream: #fdf6ee;
+      --text: #3d1f0a;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+    }
+
+    .order-container {
+      max-width: 520px;
+      margin: 70px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    }
+
+    .order-title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .order-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    input, select {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--brown);
+      outline: none;
+    }
+
+    /* ADDONS */
+    .addons-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .addon-item {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #e5d3c2;
+      cursor: pointer;
+    }
+
+    /* DATE BUTTONS */
+    .date-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .date-btn {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid #e5d3c2;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    .date-btn.active {
+      background: var(--brown);
+      color: #fff;
+      border-color: var(--brown);
+    }
+
+    /* TIME SLOTS */
+    .time-slots {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .slot.active {
+  background: var(--brown);
+  color: #fff;
+  border-color: var(--brown);
+}
+
+.slot.active span {
+  color: #fff;
+}
+
+
+.slot {
+  border: 1px solid #e5d3c2;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+    .slot input {
+      display: none;
+    }
+
+
+
+    /* BUTTON */
+    .btn-primary {
+      margin: 20px auto 0;
+      padding: 14px 30px;
+      border-radius: 30px;
+      border: none;
+      background: var(--brown);
+      color: white;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      .addons-grid,
+      .time-slots {
+        grid-template-columns: 1fr;
+      }
+    }
+    .back-btn {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--brown);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  opacity: 0.7;
+  transform: translateX(-2px);
+}
+  </style>
+</head>
+
+<body>
+
+<div class="order-container">
+    <a href="index.html" class="back-btn">← Back to Cafe</a>
+  <h2 class="order-title">🎂 Customize Your Cake</h2>
+
+  <form id="orderForm" class="order-form">
+
+    <div class="form-group">
+      <label>Cake</label>
+      <input type="text" id="cakeName" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Writing on Cake</label>
+      <input type="text" id="writing" />
+    </div>
+
+    <!-- ADDONS -->
+    <div class="form-group">
+      <label>Extra Add-ons</label>
+      <div class="addons-grid">
+        <label class="addon-item"><input type="checkbox" value="Candles"> Candles</label>
+        <label class="addon-item"><input type="checkbox" value="Snow Spray"> Snow Spray</label>
+        <label class="addon-item"><input type="checkbox" value="Popper"> Popper</label>
+        <label class="addon-item"><input type="checkbox" value="Topper"> Topper</label>
+      </div>
+
+      <input type="text" id="customAddon" placeholder="Other add-ons" />
+    </div>
+
+    <!-- SIZE -->
+    <div class="form-group">
+      <label>Size</label>
+      <select id="size">
+        <option>Half Kg</option>
+        <option>1 Kg</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="form-group" id="customSizeWrap" style="display:none;">
+      <input type="text" id="customSize" placeholder="Custom size" />
+    </div>
+
+    <!-- DATE -->
+    <div class="form-group">
+      <label>Pickup Date</label>
+      <div class="date-buttons" id="dateButtons"></div>
+    </div>
+
+    <!-- TIME -->
+    <div class="form-group">
+      <label>Pickup Time</label>
+      <div class="time-slots">
+        <label class="slot"><input type="radio" name="pickupSlot" value="9 AM - 11 AM"><span>9–11 AM</span></label>
+        <label class="slot"><input type="radio" name="pickupSlot" value="11 AM - 1 PM"><span>11–1 PM</span></label>
+        <label class="slot"><input type="radio" name="pickupSlot" value="1 PM - 3 PM"><span>1–3 PM</span></label>
+        <label class="slot"><input type="radio" name="pickupSlot" value="3 PM - 5 PM"><span>3–5 PM</span></label>
+        <label class="slot"><input type="radio" name="pickupSlot" value="5 PM - 7 PM"><span>5–7 PM</span></label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-primary">Confirm Order</button>
+
+  </form>
+</div>
+
+<script>
+
+window.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".slot").forEach(slot => {
+    slot.addEventListener("click", () => {
+
+      // remove active from all
+      document.querySelectorAll(".slot").forEach(s => s.classList.remove("active"));
+
+      // add to clicked
+      slot.classList.add("active");
+
+      // check radio manually
+      const input = slot.querySelector("input");
+      if (input) input.checked = true;
+
+    });
+  });
+});
+  // CAKE NAME
+  const params = new URLSearchParams(window.location.search);
+  const cake = params.get("cake") || "Custom Cake";
+  document.getElementById("cakeName").value = cake;
+
+  // SIZE
+  const sizeSelect = document.getElementById("size");
+  const customWrap = document.getElementById("customSizeWrap");
+
+  sizeSelect.addEventListener("change", () => {
+    customWrap.style.display = sizeSelect.value === "Other" ? "block" : "none";
+  });
+
+  // DATE BUTTONS
+  const dateContainer = document.getElementById("dateButtons");
+  let selectedDate = "";
+
+  const today = new Date();
+
+  for (let i = 0; i <= 3; i++) {
+    const d = new Date();
+    d.setDate(today.getDate() + i);
+
+    const btn = document.createElement("div");
+    btn.className = "date-btn";
+
+    btn.innerText = d.toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short"
+    });
+
+    const value = d.toISOString().split("T")[0];
+
+    btn.onclick = () => {
+      document.querySelectorAll(".date-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      selectedDate = value;
+    };
+
+    dateContainer.appendChild(btn);
+  }
+
+  // SUBMIT
+  document.getElementById("orderForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const writing = document.getElementById("writing").value;
+
+    const selectedSlot = document.querySelector('input[name="pickupSlot"]:checked');
+    const pickupTime = selectedSlot ? selectedSlot.value : "";
+
+    if (!selectedDate || !pickupTime) {
+      alert("Select pickup date & time");
+      return;
+    }
+
+    const checkedAddons = Array.from(document.querySelectorAll('.addons-grid input:checked'))
+      .map(el => el.value);
+
+    const customAddon = document.getElementById("customAddon").value.trim();
+
+    let addons = [...checkedAddons];
+    if (customAddon) addons.push(customAddon);
+
+    const size = sizeSelect.value === "Other"
+      ? document.getElementById("customSize").value
+      : sizeSelect.value;
+
+    const message = `Hi, I want to order a cake 🎂
+
+Cake: ${cake}
+Writing: ${writing || "None"}
+Add-ons: ${addons.join(", ") || "None"}
+Size: ${size}
+
+Pickup Date: ${selectedDate}
+Pickup Time: ${pickupTime}`;
+
+    window.location.href = "https://wa.me/9995523420?text=" + encodeURIComponent(message);
+  });
+</script>
+
+</body>
+</html>
