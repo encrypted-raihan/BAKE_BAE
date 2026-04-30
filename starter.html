@@ -16,29 +16,38 @@
     }
 
     /* ===== VIDEO ===== */
-    .video-bg {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -2;
-    }
+.video-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
 
+  /* lightweight styling instead of heavy blur */
+  filter: brightness(0.6) contrast(1.1);
+  transform: scale(1.05);
+  will-change: transform;
+}
+
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.15;
+  pointer-events: none;
+}
     /* ===== OVERLAY ===== */
 .overlay {
   position: fixed;
   inset: 0;
 
-  /* blur the video behind */
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-
-  /* gradient to hide compression artifacts */
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.6),
-    rgba(0,0,0,0.4),
+    rgba(0,0,0,0.65),
+    rgba(0,0,0,0.45),
     rgba(0,0,0,0.7)
   );
 
