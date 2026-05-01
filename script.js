@@ -72,24 +72,6 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
 fadeEls.forEach(el => observer.observe(el));
-window.addEventListener("load", () => {
-  const loader = document.getElementById("loader");
-
-  // step 1: expand logo
-  setTimeout(() => {
-    loader.classList.add("expand");
-  }, 200);
-
-  // step 2: fade everything out
-  setTimeout(() => {
-    loader.classList.add("hide");
-  }, 1000);
-
-  // step 3: remove from DOM
-  setTimeout(() => {
-    loader.style.display = "none";
-  }, 1600);
-});
 
 // ===== GALLERY FILTER =====
 const filterBtns = document.querySelectorAll('.filter-btn');
@@ -235,21 +217,27 @@ galleryItems.forEach(item => {
     }, 1200);
   }, { passive: true });
 });
-// ===== UNIVERSAL ORDER REDIRECT =====
-document.querySelectorAll('.menu-order').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    e.preventDefault();
 
-    // Get cake name dynamically
-    const card = this.closest('.menu-card');
-    const cakeName = card.querySelector('h4')?.innerText || "Custom Cake";
+document.querySelectorAll(".story-carousel").forEach(carousel => {
+  const slides = carousel.querySelectorAll(".carousel-slide");
+  let index = 0;
 
-    // Redirect to order page with cake name
-    const url = "order.html?cake=" + encodeURIComponent(cakeName);
-    window.location.href = url;
+  // show first
+  slides[0].classList.add("active");
+
+  setInterval(() => {
+    slides[index].classList.remove("active");
+
+    index = (index + 1) % slides.length;
+
+    slides[index].classList.add("active");
+  }, 3500);
+});
+document.querySelectorAll(".story-card").forEach(card => {
+  card.addEventListener("click", () => {
+    card.classList.toggle("active");
   });
 });
-
 
 // ===== FLOATING WA BUTTON — show after scroll =====
 const waFloat = document.querySelector('.wa-float');
