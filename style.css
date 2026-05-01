@@ -1502,25 +1502,15 @@ ul { list-style: none; }
   z-index: 9999;
 }
 
-/* single clean definition */
-#loaderLogo {
-  width: 42px;
-  height: auto;
-
-  transform: scale(3);
-  transform-origin: center;
-  will-change: transform;
-
-  transition: transform 1s ease, opacity 0.5s ease;
-}
-
-/* expand */
-#loader.expand #loaderLogo {
-  transform: scale(6);
-}
-
-/* fade */
-#loader.hide {
+body {
+  background: var(--cream);
   opacity: 0;
-  transition: opacity 1s ease;
+  animation: pageFadeIn 0.8s ease forwards;
 }
+
+@keyframes pageFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
