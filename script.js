@@ -217,31 +217,37 @@ galleryItems.forEach(item => {
     }, 1200);
   }, { passive: true });
 });
-
 const timeline = document.querySelector(".timeline");
 const items = document.querySelectorAll(".timeline-item");
 
 window.addEventListener("scroll", () => {
-  const rect = timeline.getBoundingClientRect();
   const windowHeight = window.innerHeight;
 
-  // progress (0 → 1)
+  // 🔥 center-based progress
+  const rect = timeline.getBoundingClientRect();
+  const centerY = windowHeight / 2;
+
   const progress = Math.min(
-    Math.max((windowHeight - rect.top) / (rect.height + windowHeight), 0),
+    Math.max((centerY - rect.top) / rect.height, 0),
     1
   );
 
   timeline.style.setProperty("--progress", `${progress * 100}%`);
 
-  // activate cards
+  // 🔥 card activation (already correct)
   items.forEach(item => {
-    const top = item.getBoundingClientRect().top;
+    const r = item.getBoundingClientRect();
+    const itemCenter = r.top + r.height / 2;
+    const distance = Math.abs(windowHeight / 2 - itemCenter);
 
-    if (top < windowHeight * 0.6) {
+    if (distance < 120) {
       item.classList.add("active");
+    } else {
+      item.classList.remove("active");
     }
   });
 });
+
 
 console.log('%c🍰 Bake Bae Bakers', 'font-size:20px; font-weight:bold; color:#a0673a;');
 console.log('%cBuilt by Buildex Web Solutions', 'color:#888; font-size:12px;');
