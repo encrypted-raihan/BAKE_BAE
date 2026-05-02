@@ -1843,6 +1843,7 @@ ul { list-style: none; }
   max-width: 1000px;
   margin: 100px auto;
   padding: 0 20px;
+  padding-bottom: 100px;
 }
 
 /* CENTER LINE */
@@ -1999,6 +2000,7 @@ display: none;
 
   .timeline {
     padding: 0 16px;
+    padding-bottom: 100px;
   }
 
   /* center line */
