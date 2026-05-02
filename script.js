@@ -296,23 +296,16 @@ Promise.all([
   new Promise(resolve => window.addEventListener("load", resolve))
 ]).then(() => {
 
-  const elapsed = Date.now() - startTime;
-  const remaining = Math.max(0, 1000 - elapsed); // minimum 2s
+  clearInterval(interval); // stop fake progress immediately
+
+  progress = 100;
+  progressBar.style.width = "100%";
+  percentText.textContent = "100%";
+  loaderText.textContent = "Serving fresh…";
 
   setTimeout(() => {
-    clearInterval(interval);
-
-    progress = 100;
-    progressBar.style.width = "100%";
-    percentText.textContent = "100%";
-    loaderText.textContent = "Serving fresh…";
-
-    setTimeout(() => {
-      loader.classList.add("hidden");
-    }, 300);
-
-  }, remaining);
-
+    loader.classList.add("hidden");
+  }, 200); // small fade, not forced wait
 });
 
 function smoothScrollTo(targetY, duration = 900) {
