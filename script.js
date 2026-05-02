@@ -217,37 +217,43 @@ galleryItems.forEach(item => {
     }, 1200);
   }, { passive: true });
 });
+
 const timeline = document.querySelector(".timeline");
 const items = document.querySelectorAll(".timeline-item");
 
+let ticking = false;
+
 window.addEventListener("scroll", () => {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      updateTimeline();
+      ticking = false;
+    });
+    ticking = true;
+  }
+}, { passive: true });
+
+function updateTimeline() {
+  const rect = timeline.getBoundingClientRect();
   const windowHeight = window.innerHeight;
 
-  // 🔥 center-based progress
-  const rect = timeline.getBoundingClientRect();
-  const centerY = windowHeight / 2;
-
+  // 🔥 SMOOTH CONTINUOUS PROGRESS (top → bottom)
   const progress = Math.min(
-    Math.max((centerY - rect.top) / rect.height, 0),
+    Math.max((windowHeight * 0.5 - rect.top) / rect.height, 0),
     1
   );
 
-  timeline.style.setProperty("--progress", `${progress * 100}%`);
+  timeline.style.setProperty("--progress", `${progress * rect.height}px`);
 
-  // 🔥 card activation (already correct)
+  // 🔥 ACTIVE CARD (ONLY ONCE, no duplication)
   items.forEach(item => {
     const r = item.getBoundingClientRect();
-    const itemCenter = r.top + r.height / 2;
-    const distance = Math.abs(windowHeight / 2 - itemCenter);
+    const center = r.top + r.height / 2;
+    const distance = Math.abs(windowHeight / 2 - center);
 
-    if (distance < 120) {
-      item.classList.add("active");
-    } else {
-      item.classList.remove("active");
-    }
+    item.classList.toggle("active", distance < 120);
   });
-});
-
+}
 
 console.log('%c🍰 Bake Bae Bakers', 'font-size:20px; font-weight:bold; color:#a0673a;');
 console.log('%cBuilt by Buildex Web Solutions', 'color:#888; font-size:12px;');
