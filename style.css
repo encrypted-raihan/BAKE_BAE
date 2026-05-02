@@ -2220,3 +2220,13 @@ body.scrolling .timeline-item {
   color: #fff;
   text-shadow: 0 0 8px rgba(255, 200, 150, 0.5);
 }
+body {
+  opacity: 0;
+  animation: fadeInPage 1.2s ease forwards;
+}
+
+@keyframes fadeInPage {
+  to {
+    opacity: 1;
+  }
+}

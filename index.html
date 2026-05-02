@@ -14,7 +14,7 @@
 body {
   font-family: 'Inter', sans-serif;
   overflow: hidden;
-  background: #E6C9A8;
+  background: #fdf6ee;
 }
 
 
@@ -196,7 +196,7 @@ filter: brightness(0.55) contrast(1.1) saturate(1.2) sepia(0.2);
 
 body.fade-out {
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 1.2s ease;
 }
 #videoCover {
   position: fixed;
@@ -318,7 +318,7 @@ btn.addEventListener("click", () => {
 
   setTimeout(() => {
     window.location.href = "home.html";
-  }, 600); // match CSS duration
+  }, 1200); // match CSS duration
 });
 const video = document.querySelector(".video-bg");
 const cover = document.getElementById("videoCover");
