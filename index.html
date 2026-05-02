@@ -198,13 +198,7 @@ body.fade-out {
   opacity: 0;
   transition: opacity 1.2s ease;
 }
-#videoCover {
-  position: fixed;
-  inset: 0;
-  background: #000; /* or very dark brown */
-  z-index: 9999;
-  transition: opacity 0.6s ease;
-}
+
 .credit {
   position: fixed;
   bottom: 20px;
@@ -263,6 +257,49 @@ body.fade-out {
 .credit:hover img {
   filter: brightness(1.5);
 }
+/* ===== INTRO LOADER ===== */
+#videoCover {
+  position: fixed;
+  inset: 0;
+  background: #fdf6ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.6s ease;
+}
+
+.intro-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loader-logo {
+  width: 120px;
+  margin-bottom: 16px;
+}
+
+#introLoaderText {
+  color: #4a3728;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.loader-bar {
+  width: 200px;
+  height: 5px;
+  background: #f5e8d3;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#introProgress {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #d4a843, #a0673a);
+  transition: width 0.2s ease;
+}
 
 
   </style>
@@ -276,7 +313,17 @@ body.fade-out {
 
 
 <body>
-  <div id="videoCover" style="background:#000;"></div>
+  <div id="videoCover">
+  <div class="intro-loader">
+    <img src="assets/logo.png" class="loader-logo" />
+
+    <p id="introLoaderText">Starting the oven…</p>
+
+    <div class="loader-bar">
+      <div id="introProgress"></div>
+    </div>
+  </div>
+</div>
 
   <!-- VIDEO -->
   <video autoplay muted loop playsinline preload="auto" class="video-bg">
@@ -310,32 +357,51 @@ body.fade-out {
       btn.classList.add("show");
     }, 2000);
 
-    // click action
-btn.addEventListener("click", () => {
-  sessionStorage.setItem("seenIntro", "true");
-
+   btn.addEventListener("click", () => {
   document.body.classList.add("fade-out");
 
+  // small delay for smooth transition
   setTimeout(() => {
     window.location.href = "home.html";
-  }, 1200); // match CSS duration
+  }, 1200);
 });
 const video = document.querySelector(".video-bg");
 const cover = document.getElementById("videoCover");
 
-video.addEventListener("canplay", () => {
-  video.classList.add("loaded");
+const introProgress = document.getElementById("introProgress");
+const introText = document.getElementById("introLoaderText");
 
-  cover.style.opacity = "0";
+let introVal = 0;
+
+// fake smooth progress
+const introInterval = setInterval(() => {
+  if (introVal < 90) {
+    introVal += Math.random() * 5;
+    introProgress.style.width = introVal + "%";
+
+    if (introVal < 30) introText.textContent = "Starting the oven…";
+    else if (introVal < 60) introText.textContent = "Mixing ingredients…";
+    else introText.textContent = "Almost ready…";
+  }
+}, 120);
+
+// real completion (correct event)
+video.addEventListener("canplaythrough", () => {
+  clearInterval(introInterval);
+
+  introProgress.style.width = "100%";
+  introText.textContent = "Ready!";
 
   setTimeout(() => {
-    cover.remove();
-  }, 600);
+    cover.style.opacity = "0";
+
+    setTimeout(() => {
+      cover.remove();
+    }, 600);
+
+  }, 400);
 });
 
-video.addEventListener("canplay", () => {
-  video.classList.add("loaded");
-});
   </script>
 
 </body>

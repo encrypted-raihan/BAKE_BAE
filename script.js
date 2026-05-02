@@ -47,19 +47,6 @@ navLinks.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', closeMenu);
 });
 
-// ===== SMOOTH SCROLL (iOS Safari fix) =====
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      e.preventDefault();
-      const navH = navbar.offsetHeight;
-      const top = target.getBoundingClientRect().top + window.pageYOffset - navH - 12;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
-  });
-});
-
 // ===== INTERSECTION OBSERVER — FADE UP ANIMATIONS =====
 const fadeEls = document.querySelectorAll('.fade-up');
 const observer = new IntersectionObserver((entries) => {
@@ -268,6 +255,137 @@ function updateTimeline() {
     end.classList.remove("active");
   }
 }
+
+// ===== LOADER SYSTEM =====
+const loader = document.getElementById("globalLoader");
+const progressBar = document.getElementById("loaderProgress");
+const percentText = document.getElementById("loaderPercent");
+const loaderText = document.getElementById("loaderText");
+
+let progress = 0;
+
+const messages = [
+  "Warming up the oven…",
+  "Preparing something sweet…",
+  "Almost ready…",
+  "Serving fresh…"
+];
+
+function updateText(p) {
+  if (p < 30) loaderText.textContent = messages[0];
+  else if (p < 60) loaderText.textContent = messages[1];
+  else if (p < 90) loaderText.textContent = messages[2];
+  else loaderText.textContent = messages[3];
+}
+
+// fake smooth progress until real load
+const interval = setInterval(() => {
+  if (progress < 85) {
+    progress += Math.random() * 5;
+    progressBar.style.width = progress + "%";
+    percentText.textContent = Math.floor(progress) + "%";
+    updateText(progress);
+  }
+}, 120);
+
+// real completion
+const startTime = Date.now();
+
+Promise.all([
+  document.fonts.ready,
+  new Promise(resolve => window.addEventListener("load", resolve))
+]).then(() => {
+
+  const elapsed = Date.now() - startTime;
+  const remaining = Math.max(0, 1000 - elapsed); // minimum 2s
+
+  setTimeout(() => {
+    clearInterval(interval);
+
+    progress = 100;
+    progressBar.style.width = "100%";
+    percentText.textContent = "100%";
+    loaderText.textContent = "Serving fresh…";
+
+    setTimeout(() => {
+      loader.classList.add("hidden");
+    }, 300);
+
+  }, remaining);
+
+});
+
+function smoothScrollTo(targetY, duration = 900) {
+  const startY = window.scrollY;
+  const diff = targetY - startY;
+  let start;
+
+  function easeInOutCubic(t) {
+    return t < 0.5
+      ? 4 * t * t * t
+      : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function step(timestamp) {
+    if (!start) start = timestamp;
+    const time = timestamp - start;
+    const progress = Math.min(time / duration, 1);
+
+    window.scrollTo(0, startY + diff * easeInOutCubic(progress));
+
+    if (time < duration) {
+      requestAnimationFrame(step);
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const target = document.querySelector(this.getAttribute('href'));
+    const navH = document.getElementById('navbar').offsetHeight;
+
+    const targetY = target.offsetTop - navH - 30;
+
+    smoothScrollTo(targetY, 1000);
+
+    // trigger animation after scroll
+    setTimeout(() => {
+      target.querySelectorAll('.fade-up').forEach(el => {
+        el.classList.add('visible');
+      });
+    }, 400);
+  });
+});
+
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const targetId = this.getAttribute('href');
+    const target = document.querySelector(targetId);
+
+    const navbarHeight = document.getElementById('navbar').offsetHeight;
+
+    const offsetTop = target.offsetTop - navbarHeight - 40;
+
+    // scroll
+    window.scrollTo({
+      top: offsetTop,
+      behavior: 'smooth'
+    });
+
+    // 🔥 FORCE animation after scroll
+    setTimeout(() => {
+      target.querySelectorAll('.fade-up').forEach(el => {
+        el.classList.add('visible');
+      });
+    }, 300); // adjust timing if needed
+  });
+});
 
 
 console.log('%c🍰 Bake Bae Bakers', 'font-size:20px; font-weight:bold; color:#a0673a;');
