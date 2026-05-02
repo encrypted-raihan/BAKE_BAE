@@ -218,41 +218,30 @@ galleryItems.forEach(item => {
   }, { passive: true });
 });
 
-document.querySelectorAll(".story-carousel").forEach(carousel => {
-  const slides = carousel.querySelectorAll(".carousel-slide");
-  let index = 0;
+const timeline = document.querySelector(".timeline");
+const items = document.querySelectorAll(".timeline-item");
 
-  // show first
-  slides[0].classList.add("active");
+window.addEventListener("scroll", () => {
+  const rect = timeline.getBoundingClientRect();
+  const windowHeight = window.innerHeight;
 
-  setInterval(() => {
-    slides[index].classList.remove("active");
+  // progress (0 → 1)
+  const progress = Math.min(
+    Math.max((windowHeight - rect.top) / (rect.height + windowHeight), 0),
+    1
+  );
 
-    index = (index + 1) % slides.length;
+  timeline.style.setProperty("--progress", `${progress * 100}%`);
 
-    slides[index].classList.add("active");
-  }, 3500);
-});
-document.querySelectorAll(".story-card").forEach(card => {
-  card.addEventListener("click", () => {
-    card.classList.toggle("active");
+  // activate cards
+  items.forEach(item => {
+    const top = item.getBoundingClientRect().top;
+
+    if (top < windowHeight * 0.6) {
+      item.classList.add("active");
+    }
   });
 });
-
-// ===== FLOATING WA BUTTON — show after scroll =====
-const waFloat = document.querySelector('.wa-float');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 300) {
-    waFloat.style.opacity = '1';
-    waFloat.style.transform = '';
-  } else {
-    waFloat.style.opacity = '0';
-    waFloat.style.transform = 'translateY(20px)';
-  }
-}, { passive: true });
-waFloat.style.opacity = '0';
-waFloat.style.transform = 'translateY(20px)';
-waFloat.style.transition = 'opacity 0.4s ease, transform 0.4s ease, box-shadow 0.3s, background 0.3s';
 
 console.log('%c🍰 Bake Bae Bakers', 'font-size:20px; font-weight:bold; color:#a0673a;');
 console.log('%cBuilt by Buildex Web Solutions', 'color:#888; font-size:12px;');
