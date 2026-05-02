@@ -1705,11 +1705,15 @@ ul { list-style: none; }
 .story-content {
   color: white;
   max-width: 400px;
+  margin-top: auto; /* 🔥 forces it to bottom */
+  text-align: left; 
+  
 }
 .story-content h3 {
   font-family: var(--font-display);
   font-size: 28px;
   margin-bottom: 6px;
+  justify-content: space-between;
 }
 .story-line {
   font-style: italic;
@@ -1729,18 +1733,42 @@ ul { list-style: none; }
 }
 
 /* Info Panel */
+.story-card.active .story-content {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.story-content {
+  transition: opacity 0.3s ease;
+}
+
 .info-panel {
   position: absolute;
   inset: 0;
+
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-  background: linear-gradient(180deg, rgba(61, 31, 10, 0.75) 0%, rgba(160, 103, 58, 0.7) 60%, rgba(200, 149, 106, 0.65) 100%);
-  backdrop-filter: blur(8px);
+
+  justify-content: center;   /* 🔥 move content to top */
+  align-items: center;           /* keep centered horizontally (change if needed) */
+
+  padding: 30px;
+  padding-top: 20px;             /* 🔥 control top spacing */
+
+  background: linear-gradient(
+    180deg,
+    rgba(61, 31, 10, 0.75) 0%,
+    rgba(160, 103, 58, 0.7) 60%,
+    rgba(200, 149, 106, 0.65) 100%
+  );
+
+  backdrop-filter: blur(10px);
   color: white;
   text-align: center;
-  padding: 30px;
+
+  gap: 8px;                      /* 🔥 prevents text sticking together */
+
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.4s ease;
