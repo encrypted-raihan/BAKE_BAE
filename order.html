@@ -2,329 +2,814 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Order Cake</title>
+  <title>Order Cake – Bake Bae Bakers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --brown: #a0673a;
       --cream: #fdf6ee;
-      --text: #3d1f0a;
+      --cream-dark: #f5e8d3;
+      --brown-light: #c8956a;
+      --brown: #a0673a;
+      --brown-dark: #6b3f1e;
+      --chocolate: #3d1f0a;
+      --gold: #d4a843;
+      --gold-light: #f5d98b;
+      --pink-soft: #fce4d6;
+      --text-dark: #1a0f08;
+      --text-mid: #4a3728;
+      --text-light: #8b6a52;
+      --white: #ffffff;
+      --shadow-soft: 0 4px 24px rgba(100,60,20,0.10);
+      --shadow-mid: 0 8px 40px rgba(100,60,20,0.16);
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, sans-serif;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      margin: 0;
-      font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
-      color: var(--text);
+      font-family: var(--font-body);
+      background: linear-gradient(150deg, var(--cream) 0%, #feeacc 50%, #fde0b0 100%);
+      min-height: 100vh;
+      color: var(--text-dark);
+      opacity: 0;
+      animation: pageFadeIn 0.6s ease forwards;
     }
 
-    .order-container {
-      max-width: 520px;
-      margin: 70px auto;
-      padding: 30px;
-      background: #fff;
-      border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    @keyframes pageFadeIn { to { opacity: 1; } }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-8px); }
     }
 
-    .order-title {
-      text-align: center;
-      margin-bottom: 20px;
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 14px 0;
+      background: rgba(253,246,238,0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 2px 20px rgba(100,60,20,0.08);
     }
-
-    .order-form {
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
       display: flex;
-      flex-direction: column;
-      gap: 18px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo-icon { font-size: 1.7rem; }
+    .nav-logo-text { display: flex; flex-direction: column; line-height: 1; }
+    .nav-logo-name {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--chocolate);
+    }
+    .nav-logo-sub {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--brown-light);
+      font-weight: 500;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--brown);
+      text-decoration: none;
+      padding: 8px 18px;
+      border: 1.5px solid rgba(160,103,58,0.3);
+      border-radius: 50px;
+      transition: var(--transition);
+    }
+    .back-link:hover {
+      background: var(--brown);
+      color: var(--white);
+      border-color: var(--brown);
+      transform: translateX(-2px);
+    }
+
+    /* ===== MAIN LAYOUT ===== */
+    .page-wrapper {
+      min-height: 100vh;
+      padding: 100px 24px 60px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .order-layout {
+      width: 100%;
+      max-width: 580px;
+      animation: fadeUp 0.7s ease 0.1s both;
+    }
+
+    /* ===== HERO BADGE ===== */
+    .page-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(160,103,58,0.1);
+      border: 1px solid rgba(160,103,58,0.22);
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--brown);
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    /* ===== PAGE TITLE ===== */
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 700;
+      color: var(--chocolate);
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+    .page-title em {
+      font-style: italic;
+      color: var(--brown);
+    }
+    .page-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      margin-bottom: 2rem;
+    }
+
+    /* ===== CAKE BADGE ===== */
+    .cake-selected-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, var(--brown-dark) 0%, var(--chocolate) 100%);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-soft);
+      animation: fadeUp 0.6s ease 0.2s both;
+    }
+    .cake-badge-icon { font-size: 2rem; animation: floatY 3s ease-in-out infinite; }
+    .cake-badge-text { flex: 1; }
+    .cake-badge-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(253,246,238,0.55);
+      margin-bottom: 2px;
+    }
+    .cake-badge-name {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--cream);
+    }
+    .cake-badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold-light);
+      box-shadow: 0 0 8px rgba(245,217,139,0.6);
+    }
+
+    /* ===== FORM CARD ===== */
+    .order-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-mid);
+      border: 1px solid rgba(200,149,106,0.12);
+      overflow: hidden;
+      animation: fadeUp 0.7s ease 0.15s both;
+    }
+
+    /* ===== FORM SECTIONS ===== */
+    .form-section {
+      padding: 24px 28px;
+      border-bottom: 1px solid rgba(200,149,106,0.1);
+    }
+    .form-section:last-of-type { border-bottom: none; }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(200,149,106,0.2);
     }
 
     .form-group {
       display: flex;
       flex-direction: column;
       gap: 6px;
+      margin-bottom: 14px;
+    }
+    .form-group:last-child { margin-bottom: 0; }
+
+    label.field-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-mid);
     }
 
-    input, select {
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #ddd;
+    input[type="text"],
+    select,
+    input[type="text"]::placeholder {
+      font-family: var(--font-body);
     }
-
-    input:focus, select:focus {
-      border-color: var(--brown);
+    input[type="text"],
+    select {
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid rgba(200,149,106,0.25);
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      background: var(--cream);
       outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+    input[type="text"]:focus,
+    select:focus {
+      border-color: var(--brown);
+      box-shadow: 0 0 0 3px rgba(160,103,58,0.12);
+      background: var(--white);
+    }
+    input[readonly] {
+      color: var(--text-light);
+      cursor: default;
+      background: var(--cream-dark);
     }
 
-    /* ADDONS */
+    /* ===== ADDONS GRID ===== */
     .addons-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 8px;
+      margin-bottom: 12px;
     }
-
     .addon-item {
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #e5d3c2;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 14px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid rgba(200,149,106,0.2);
+      background: var(--cream);
       cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-mid);
+      user-select: none;
     }
+    .addon-item:hover {
+      border-color: var(--brown-light);
+      background: var(--cream-dark);
+    }
+    .addon-item input[type="checkbox"] {
+      accent-color: var(--brown);
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+      padding: 0;
+      border-radius: 4px;
+      border: none;
+      background: none;
+    }
+    .addon-item:has(input:checked) {
+      border-color: var(--brown);
+      background: rgba(160,103,58,0.07);
+      color: var(--brown-dark);
+    }
+    .addon-emoji { font-size: 1rem; }
 
-    /* DATE BUTTONS */
+    /* ===== DATE BUTTONS ===== */
     .date-buttons {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
-
     .date-btn {
-      padding: 10px 14px;
-      border-radius: 12px;
-      border: 1px solid #e5d3c2;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid rgba(200,149,106,0.25);
+      background: var(--cream);
+      color: var(--text-mid);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
       cursor: pointer;
-      background: #fff;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      min-width: 64px;
     }
-
+    .date-btn .day-name {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+    .date-btn .day-num {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--chocolate);
+      line-height: 1;
+    }
+    .date-btn .month-name {
+      font-size: 0.7rem;
+      color: var(--text-light);
+    }
+    .date-btn:hover {
+      border-color: var(--brown-light);
+      background: var(--cream-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-soft);
+    }
     .date-btn.active {
-      background: var(--brown);
-      color: #fff;
-      border-color: var(--brown);
+      background: linear-gradient(135deg, var(--brown-dark) 0%, var(--chocolate) 100%);
+      border-color: transparent;
+      box-shadow: 0 4px 16px rgba(107,63,30,0.35);
     }
+    .date-btn.active .day-name,
+    .date-btn.active .day-num,
+    .date-btn.active .month-name {
+      color: var(--cream);
+    }
+    .date-btn.active .day-num { color: var(--gold-light); }
 
-    /* TIME SLOTS */
+    /* ===== TIME SLOTS ===== */
     .time-slots {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 8px;
+    }
+    .slot {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 10px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid rgba(200,149,106,0.22);
+      background: var(--cream);
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+      user-select: none;
+    }
+    .slot input { display: none; }
+    .slot-icon { font-size: 0.9rem; }
+    .slot-text {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-mid);
+    }
+    .slot:hover {
+      border-color: var(--brown-light);
+      background: var(--cream-dark);
+      transform: translateY(-1px);
     }
     .slot.active {
-  background: var(--brown);
-  color: #fff;
-  border-color: var(--brown);
-}
+      background: linear-gradient(135deg, var(--brown-dark) 0%, var(--chocolate) 100%);
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(107,63,30,0.3);
+    }
+    .slot.active .slot-text,
+    .slot.active .slot-icon { color: var(--cream); }
 
-.slot.active span {
-  color: #fff;
-}
-
-
-.slot {
-  border: 1px solid #e5d3c2;
-  border-radius: 12px;
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-    .slot input {
-      display: none;
+    /* ===== SUBMIT AREA ===== */
+    .submit-section {
+      padding: 24px 28px 28px;
+      background: var(--cream);
     }
 
+    .summary-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+      min-height: 28px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 50px;
+      background: rgba(160,103,58,0.1);
+      border: 1px solid rgba(160,103,58,0.2);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--brown-dark);
+      animation: fadeUp 0.3s ease both;
+    }
+    .pill.missing {
+      background: rgba(160,103,58,0.05);
+      border-style: dashed;
+      color: var(--text-light);
+      font-weight: 400;
+    }
 
-
-    /* BUTTON */
-    .btn-primary {
-      margin: 20px auto 0;
-      padding: 14px 30px;
-      border-radius: 30px;
+    .btn-submit {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, var(--brown) 0%, var(--brown-dark) 100%);
+      color: var(--white);
+      border-radius: 50px;
       border: none;
-      background: var(--brown);
-      color: white;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 6px 24px rgba(160,103,58,0.35);
+      letter-spacing: 0.02em;
+    }
+    .btn-submit:hover {
+      background: linear-gradient(135deg, var(--brown-dark) 0%, var(--chocolate) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 36px rgba(160,103,58,0.45);
+    }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit svg { flex-shrink: 0; }
+
+    .order-note {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.75rem;
+      color: var(--text-light);
     }
 
-    @media (max-width: 600px) {
-      .addons-grid,
-      .time-slots {
-        grid-template-columns: 1fr;
-      }
+    /* ===== DECORATIVE BG ELEMENTS ===== */
+    .bg-deco {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
     }
-    .back-btn {
-  display: inline-block;
-  margin-bottom: 10px;
-  color: var(--brown);
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
+    .bg-deco-1 {
+      top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,168,67,0.12) 0%, transparent 70%);
+    }
+    .bg-deco-2 {
+      bottom: -80px; left: -80px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,149,106,0.14) 0%, transparent 70%);
+    }
 
-.back-btn:hover {
-  opacity: 0.7;
-  transform: translateX(-2px);
-}
+    /* ===== HIDDEN SIZE FIELD ===== */
+    .custom-size-wrap { display: none; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 520px) {
+      .page-wrapper { padding: 88px 16px 50px; }
+      .form-section { padding: 20px 20px; }
+      .addons-grid { grid-template-columns: 1fr 1fr; }
+      .time-slots { grid-template-columns: 1fr 1fr; }
+      .submit-section { padding: 18px 20px 24px; }
+    }
   </style>
 </head>
 
 <body>
+  <div class="bg-deco bg-deco-1"></div>
+  <div class="bg-deco bg-deco-2"></div>
 
-<div class="order-container">
-    <a href="index.html" class="back-btn">← Back to Cafe</a>
-  <h2 class="order-title">🎂 Customize Your Cake</h2>
-
-  <form id="orderForm" class="order-form">
-
-    <div class="form-group">
-      <label>Cake</label>
-      <input type="text" id="cakeName" readonly />
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="home.html" class="nav-logo">
+        <span class="nav-logo-icon">🍰</span>
+        <div class="nav-logo-text">
+          <span class="nav-logo-name">Bake Bae</span>
+          <span class="nav-logo-sub">Something Sweet For All</span>
+        </div>
+      </a>
+      <a href="home.html#menu" class="back-link">
+        ← Back to Menu
+      </a>
     </div>
+  </nav>
 
-    <div class="form-group">
-      <label>Writing on Cake</label>
-      <input type="text" id="writing" />
-    </div>
+  <!-- MAIN -->
+  <div class="page-wrapper">
+    <div class="order-layout">
 
-    <!-- ADDONS -->
-    <div class="form-group">
-      <label>Extra Add-ons</label>
-      <div class="addons-grid">
-        <label class="addon-item"><input type="checkbox" value="Candles"> Candles</label>
-        <label class="addon-item"><input type="checkbox" value="Snow Spray"> Snow Spray</label>
-        <label class="addon-item"><input type="checkbox" value="Popper"> Popper</label>
-        <label class="addon-item"><input type="checkbox" value="Topper"> Topper</label>
+      <!-- Page heading -->
+      <div class="page-badge">✨ Custom Cake Order</div>
+      <h1 class="page-title">Craft Your <em>Perfect</em> Cake</h1>
+      <p class="page-subtitle">Tell us how you'd like it — we'll bake it with love.</p>
+
+      <!-- Selected cake badge -->
+      <div class="cake-selected-badge">
+        <div class="cake-badge-icon">🎂</div>
+        <div class="cake-badge-text">
+          <div class="cake-badge-label">You selected</div>
+          <div class="cake-badge-name" id="cakeBadgeName">Loading…</div>
+        </div>
+        <div class="cake-badge-dot"></div>
       </div>
 
-      <input type="text" id="customAddon" placeholder="Other add-ons" />
-    </div>
+      <!-- FORM CARD -->
+      <div class="order-card">
 
-    <!-- SIZE -->
-    <div class="form-group">
-      <label>Size</label>
-      <select id="size">
-        <option>Half Kg</option>
-        <option>1 Kg</option>
-        <option>Other</option>
-      </select>
-    </div>
+        <!-- SECTION 1: Personalisation -->
+        <div class="form-section">
+          <div class="section-label">🎀 Personalisation</div>
 
-    <div class="form-group" id="customSizeWrap" style="display:none;">
-      <input type="text" id="customSize" placeholder="Custom size" />
-    </div>
+          <div class="form-group">
+            <label class="field-label">Cake Name</label>
+            <input type="text" id="cakeName" readonly />
+          </div>
 
-    <!-- DATE -->
-    <div class="form-group">
-      <label>Pickup Date</label>
-      <div class="date-buttons" id="dateButtons"></div>
-    </div>
+          <div class="form-group">
+            <label class="field-label">Writing on Cake <span style="opacity:.5;font-weight:400">(optional)</span></label>
+            <input type="text" id="writing" placeholder="e.g. Happy Birthday Priya! 🎉" />
+          </div>
+        </div>
 
-    <!-- TIME -->
-    <div class="form-group">
-      <label>Pickup Time</label>
-      <div class="time-slots">
-        <label class="slot"><input type="radio" name="pickupSlot" value="9 AM - 11 AM"><span>9–11 AM</span></label>
-        <label class="slot"><input type="radio" name="pickupSlot" value="11 AM - 1 PM"><span>11–1 PM</span></label>
-        <label class="slot"><input type="radio" name="pickupSlot" value="1 PM - 3 PM"><span>1–3 PM</span></label>
-        <label class="slot"><input type="radio" name="pickupSlot" value="3 PM - 5 PM"><span>3–5 PM</span></label>
-        <label class="slot"><input type="radio" name="pickupSlot" value="5 PM - 7 PM"><span>5–7 PM</span></label>
-      </div>
-    </div>
+        <!-- SECTION 2: Add-ons -->
+        <div class="form-section">
+          <div class="section-label">🎁 Extra Add-ons</div>
 
-    <button type="submit" class="btn-primary">Confirm Order</button>
+          <div class="addons-grid">
+            <label class="addon-item">
+              <input type="checkbox" value="Candles">
+              <span class="addon-emoji">🕯️</span> Candles
+            </label>
+            <label class="addon-item">
+              <input type="checkbox" value="Snow Spray">
+              <span class="addon-emoji">❄️</span> Snow Spray
+            </label>
+            <label class="addon-item">
+              <input type="checkbox" value="Popper">
+              <span class="addon-emoji">🎉</span> Popper
+            </label>
+            <label class="addon-item">
+              <input type="checkbox" value="Topper">
+              <span class="addon-emoji">⭐</span> Topper
+            </label>
+          </div>
 
-  </form>
-</div>
+          <div class="form-group" style="margin-top:8px;">
+            <input type="text" id="customAddon" placeholder="Other add-ons (e.g. ribbon, custom card)" />
+          </div>
+        </div>
 
-<script>
+        <!-- SECTION 3: Size -->
+        <div class="form-section">
+          <div class="section-label">⚖️ Size</div>
+          <div class="form-group">
+            <select id="size">
+              <option value="Half Kg">Half Kg</option>
+              <option value="1 Kg">1 Kg</option>
+              <option value="Other">Other (custom)</option>
+            </select>
+          </div>
+          <div class="form-group custom-size-wrap" id="customSizeWrap">
+            <input type="text" id="customSize" placeholder="Enter custom size / weight" />
+          </div>
+        </div>
 
-window.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".slot").forEach(slot => {
-    slot.addEventListener("click", () => {
+        <!-- SECTION 4: Pickup Date -->
+        <div class="form-section">
+          <div class="section-label">📅 Pickup Date</div>
+          <div class="date-buttons" id="dateButtons"></div>
+        </div>
 
-      // remove active from all
-      document.querySelectorAll(".slot").forEach(s => s.classList.remove("active"));
+        <!-- SECTION 5: Pickup Time -->
+        <div class="form-section">
+          <div class="section-label">🕐 Pickup Time</div>
+          <div class="time-slots">
+            <label class="slot">
+              <input type="radio" name="pickupSlot" value="9 AM - 11 AM">
+              <span class="slot-icon">🌅</span>
+              <span class="slot-text">9 – 11 AM</span>
+            </label>
+            <label class="slot">
+              <input type="radio" name="pickupSlot" value="11 AM - 1 PM">
+              <span class="slot-icon">☀️</span>
+              <span class="slot-text">11 – 1 PM</span>
+            </label>
+            <label class="slot">
+              <input type="radio" name="pickupSlot" value="1 PM - 3 PM">
+              <span class="slot-icon">🌤️</span>
+              <span class="slot-text">1 – 3 PM</span>
+            </label>
+            <label class="slot">
+              <input type="radio" name="pickupSlot" value="3 PM - 5 PM">
+              <span class="slot-icon">🌇</span>
+              <span class="slot-text">3 – 5 PM</span>
+            </label>
+            <label class="slot" style="grid-column: span 2;">
+              <input type="radio" name="pickupSlot" value="5 PM - 7 PM">
+              <span class="slot-icon">🌆</span>
+              <span class="slot-text">5 – 7 PM</span>
+            </label>
+          </div>
+        </div>
 
-      // add to clicked
-      slot.classList.add("active");
+        <!-- SUBMIT AREA -->
+        <div class="submit-section">
+          <!-- Live summary pills -->
+          <div class="summary-pills" id="summaryPills">
+            <span class="pill missing">📅 No date selected</span>
+            <span class="pill missing">🕐 No time selected</span>
+          </div>
 
-      // check radio manually
-      const input = slot.querySelector("input");
-      if (input) input.checked = true;
+          <button type="button" id="submitBtn" class="btn-submit">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Confirm Order on WhatsApp
+          </button>
+          <p class="order-note">You'll be redirected to WhatsApp to complete your order 🍰</p>
+        </div>
 
+      </div><!-- /order-card -->
+    </div><!-- /order-layout -->
+  </div><!-- /page-wrapper -->
+
+  <script>
+    // ── Cake name from URL params ──
+    const params = new URLSearchParams(window.location.search);
+    const cake = params.get("cake") || "Custom Cake";
+    document.getElementById("cakeName").value = cake;
+    document.getElementById("cakeBadgeName").textContent = cake;
+
+    // ── Size toggle ──
+    const sizeSelect = document.getElementById("size");
+    const customWrap = document.getElementById("customSizeWrap");
+    sizeSelect.addEventListener("change", () => {
+      customWrap.style.display = sizeSelect.value === "Other" ? "block" : "none";
     });
-  });
-});
-  // CAKE NAME
-  const params = new URLSearchParams(window.location.search);
-  const cake = params.get("cake") || "Custom Cake";
-  document.getElementById("cakeName").value = cake;
 
-  // SIZE
-  const sizeSelect = document.getElementById("size");
-  const customWrap = document.getElementById("customSizeWrap");
+    // ── Date buttons ──
+    const dateContainer = document.getElementById("dateButtons");
+    let selectedDate = "";
+    const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-  sizeSelect.addEventListener("change", () => {
-    customWrap.style.display = sizeSelect.value === "Other" ? "block" : "none";
-  });
+    for (let i = 0; i <= 4; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() + i);
 
-  // DATE BUTTONS
-  const dateContainer = document.getElementById("dateButtons");
-  let selectedDate = "";
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "date-btn";
+      btn.innerHTML = `
+        <span class="day-name">${i === 0 ? "Today" : days[d.getDay()]}</span>
+        <span class="day-num">${d.getDate()}</span>
+        <span class="month-name">${months[d.getMonth()]}</span>
+      `;
 
-  const today = new Date();
+      const value = d.toISOString().split("T")[0];
+      btn.onclick = () => {
+        document.querySelectorAll(".date-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedDate = value;
+        updateSummary();
+      };
 
-  for (let i = 0; i <= 3; i++) {
-    const d = new Date();
-    d.setDate(today.getDate() + i);
-
-    const btn = document.createElement("div");
-    btn.className = "date-btn";
-
-    btn.innerText = d.toLocaleDateString("en-IN", {
-      day: "numeric",
-      month: "short"
-    });
-
-    const value = d.toISOString().split("T")[0];
-
-    btn.onclick = () => {
-      document.querySelectorAll(".date-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      selectedDate = value;
-    };
-
-    dateContainer.appendChild(btn);
-  }
-
-  // SUBMIT
-  document.getElementById("orderForm").addEventListener("submit", function(e){
-    e.preventDefault();
-
-    const writing = document.getElementById("writing").value;
-
-    const selectedSlot = document.querySelector('input[name="pickupSlot"]:checked');
-    const pickupTime = selectedSlot ? selectedSlot.value : "";
-
-    if (!selectedDate || !pickupTime) {
-      alert("Select pickup date & time");
-      return;
+      dateContainer.appendChild(btn);
     }
 
-    const checkedAddons = Array.from(document.querySelectorAll('.addons-grid input:checked'))
-      .map(el => el.value);
+    // ── Time slot selection ──
+    document.querySelectorAll(".slot").forEach(slot => {
+      slot.addEventListener("click", () => {
+        document.querySelectorAll(".slot").forEach(s => s.classList.remove("active"));
+        slot.classList.add("active");
+        slot.querySelector("input").checked = true;
+        updateSummary();
+      });
+    });
 
-    const customAddon = document.getElementById("customAddon").value.trim();
+    // ── Live summary pills ──
+    function updateSummary() {
+      const pills = document.getElementById("summaryPills");
+      const slot = document.querySelector('input[name="pickupSlot"]:checked');
+      pills.innerHTML = "";
 
-    let addons = [...checkedAddons];
-    if (customAddon) addons.push(customAddon);
+      if (selectedDate) {
+        const d = new Date(selectedDate + "T00:00:00");
+        pills.innerHTML += `<span class="pill">📅 ${d.toLocaleDateString("en-IN",{day:"numeric",month:"short"})}</span>`;
+      } else {
+        pills.innerHTML += `<span class="pill missing">📅 No date selected</span>`;
+      }
 
-    const size = sizeSelect.value === "Other"
-      ? document.getElementById("customSize").value
-      : sizeSelect.value;
+      if (slot) {
+        pills.innerHTML += `<span class="pill">🕐 ${slot.value}</span>`;
+      } else {
+        pills.innerHTML += `<span class="pill missing">🕐 No time selected</span>`;
+      }
 
-    const message = `Hi, I want to order a cake 🎂
+      const size = sizeSelect.value === "Other"
+        ? (document.getElementById("customSize").value || "Custom")
+        : sizeSelect.value;
+      if (size) pills.innerHTML += `<span class="pill">⚖️ ${size}</span>`;
+
+      const addons = Array.from(document.querySelectorAll('.addons-grid input:checked')).map(e => e.value);
+      if (addons.length) pills.innerHTML += `<span class="pill">🎁 ${addons.join(", ")}</span>`;
+    }
+
+    // update pills on size/addon changes
+    sizeSelect.addEventListener("change", updateSummary);
+    document.querySelectorAll('.addons-grid input').forEach(cb => cb.addEventListener("change", updateSummary));
+
+    // ── Submit ──
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const writing = document.getElementById("writing").value;
+      const selectedSlot = document.querySelector('input[name="pickupSlot"]:checked');
+      const pickupTime = selectedSlot ? selectedSlot.value : "";
+
+      if (!selectedDate || !pickupTime) {
+        // Shake animation hint
+        const card = document.querySelector(".order-card");
+        card.style.transition = "transform 0.1s";
+        let times = 0;
+        const shake = setInterval(() => {
+          card.style.transform = times % 2 === 0 ? "translateX(-6px)" : "translateX(6px)";
+          times++;
+          if (times > 5) { clearInterval(shake); card.style.transform = ""; }
+        }, 60);
+        alert("Please select a pickup date & time before confirming.");
+        return;
+      }
+
+      const checkedAddons = Array.from(document.querySelectorAll('.addons-grid input:checked')).map(el => el.value);
+      const customAddon = document.getElementById("customAddon").value.trim();
+      let addons = [...checkedAddons];
+      if (customAddon) addons.push(customAddon);
+
+      const size = sizeSelect.value === "Other"
+        ? document.getElementById("customSize").value
+        : sizeSelect.value;
+
+      const message = `Hi Bake Bae! 🎂 I'd like to place a cake order:
 
 Cake: ${cake}
-Writing: ${writing || "None"}
+Writing on Cake: ${writing || "None"}
 Add-ons: ${addons.join(", ") || "None"}
 Size: ${size}
 
 Pickup Date: ${selectedDate}
-Pickup Time: ${pickupTime}`;
+Pickup Time: ${pickupTime}
 
-    window.location.href = "https://wa.me/9995523420?text=" + encodeURIComponent(message);
-  });
-</script>
+Looking forward to hearing from you! 🍰`;
 
+      window.location.href = "https://wa.me/9995523420?text=" + encodeURIComponent(message);
+    });
+  </script>
 </body>
 </html>
