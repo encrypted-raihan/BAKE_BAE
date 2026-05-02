@@ -242,16 +242,13 @@ function updateTimeline() {
     1
   );
 
-  // ✅ NEW LOGIC (this is the fix)
-const endDot = document.querySelector(".end-dot");
+  // ✅ FIXED LINE LOGIC
+  const endDot = document.querySelector(".end-dot");
+  const dotRect = endDot.getBoundingClientRect();
+  const dotOffset = dotRect.top - rect.top;
 
-const dotRect = endDot.getBoundingClientRect();
-const dotOffset = dotRect.top - rect.top; // relative to timeline
-
-const rawHeight = progress * rect.height;
-const lineHeight = Math.max(0, Math.min(rawHeight, dotOffset));
-
-timeline.style.setProperty("--progress", `${lineHeight}px`);
+  const rawHeight = progress * rect.height;
+  const lineHeight = Math.max(0, Math.min(rawHeight, dotOffset));
 
   timeline.style.setProperty("--progress", `${lineHeight}px`);
 
@@ -265,7 +262,7 @@ timeline.style.setProperty("--progress", `${lineHeight}px`);
 
   const end = document.querySelector(".timeline-end");
 
-  if (progress > 0.95) {
+  if (lineHeight >= dotOffset - 2) {
     end.classList.add("active");
   } else {
     end.classList.remove("active");

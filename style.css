@@ -2204,3 +2204,19 @@ body.scrolling .timeline-item {
   z-index: 1; /* push line behind content */
 }
 
+.footer-credit {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: rgba(255, 220, 180, 0.7);
+}
+
+.footer-credit a {
+  color: #f5d6a3;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer-credit a:hover {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255, 200, 150, 0.5);
+}
