@@ -2111,3 +2111,96 @@ body.scrolling .timeline-item {
   z-index: 3;
   background: #fdf6ee; /* solid, no transparency */
 }
+
+/* ===== TIMELINE END NODE ===== */
+
+.timeline-end {
+  position: relative;
+  margin-top: 120px;
+  text-align: center;
+}
+
+/* DOT */
+.end-dot {
+  width: 18px;
+  height: 18px;
+  background: var(--gold);
+  border-radius: 50%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  transform: scale(0.6);
+  opacity: 0.5;
+  transition: 0.4s ease;
+}
+
+/* GLOW RING */
+.end-dot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(212,168,67,0.4);
+  transform: scale(1);
+  opacity: 0;
+}
+
+/* ACTIVE STATE (🔥 triggered by JS) */
+.timeline-end.active .end-dot {
+  transform: scale(1.2);
+  opacity: 1;
+  box-shadow: 0 0 20px rgba(212,168,67,0.6);
+}
+
+.timeline-end.active .end-dot::before {
+  animation: pulse-ring 1.5s infinite;
+}
+
+/* TEXT */
+.end-content {
+  margin-top: 40px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: 0.6s ease;
+}
+
+.timeline-end.active .end-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* TEXT STYLE (match your dark section vibe) */
+.end-content h3 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--chocolate);
+  margin-bottom: 10px;
+}
+
+.end-content p {
+  color: var(--text-light);
+}
+.timeline-end::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  width: 2px;
+  height: 120px;
+  background: linear-gradient(to bottom, var(--brown), transparent);
+  transform: translateX(-50%);
+}
+
+.timeline-end {
+  position: relative;
+  z-index: 5; /* bring whole block forward */
+}
+
+.end-content {
+  position: relative;
+  z-index: 6; /* text always above line */
+}
+.timeline::after {
+  z-index: 1; /* push line behind content */
+}
+

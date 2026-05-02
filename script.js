@@ -237,15 +237,24 @@ function updateTimeline() {
   const rect = timeline.getBoundingClientRect();
   const windowHeight = window.innerHeight;
 
-  // 🔥 SMOOTH CONTINUOUS PROGRESS (top → bottom)
   const progress = Math.min(
     Math.max((windowHeight * 0.5 - rect.top) / rect.height, 0),
     1
   );
 
-  timeline.style.setProperty("--progress", `${progress * rect.height}px`);
+  // ✅ NEW LOGIC (this is the fix)
+const endDot = document.querySelector(".end-dot");
 
-  // 🔥 ACTIVE CARD (ONLY ONCE, no duplication)
+const dotRect = endDot.getBoundingClientRect();
+const dotOffset = dotRect.top - rect.top; // relative to timeline
+
+const rawHeight = progress * rect.height;
+const lineHeight = Math.max(0, Math.min(rawHeight, dotOffset));
+
+timeline.style.setProperty("--progress", `${lineHeight}px`);
+
+  timeline.style.setProperty("--progress", `${lineHeight}px`);
+
   items.forEach(item => {
     const r = item.getBoundingClientRect();
     const center = r.top + r.height / 2;
@@ -253,7 +262,16 @@ function updateTimeline() {
 
     item.classList.toggle("active", distance < 120);
   });
+
+  const end = document.querySelector(".timeline-end");
+
+  if (progress > 0.95) {
+    end.classList.add("active");
+  } else {
+    end.classList.remove("active");
+  }
 }
+
 
 console.log('%c🍰 Bake Bae Bakers', 'font-size:20px; font-weight:bold; color:#a0673a;');
 console.log('%cBuilt by Buildex Web Solutions', 'color:#888; font-size:12px;');
